@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vectra"
+version = "0.1.0"
+description = "Vectra is a general-purpose spatial math library for games and graphics, covering vectors, transforms, geometry, and more, with no visuals involved."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Yurii Shestopalov", email = "yurii.shestopalov@gmail.com" }]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "mypy"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vectra"]
