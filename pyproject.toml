@@ -15,5 +15,9 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest", "mypy"]
 
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+testpaths = ["tests", "src"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/vectra"]
