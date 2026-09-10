@@ -1,4 +1,8 @@
-from .vector2D import Vector2D
-from .vector2D import Vector3D
+"""
+Public API for the vectra package.
+"""
+
+from .vector2d import Vector2D
+from .vector3d import Vector3D
 
 __all__ = ["Vector2D", "Vector3D"]
