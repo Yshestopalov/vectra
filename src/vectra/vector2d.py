@@ -144,7 +144,7 @@ class Vector2D:
         Returns:
             The scalar dot product.
 
-        >>> Vector2D(1, 0).dot(Vector2D(0, 1))
+        >>> Vector2D(1.0, 0.0).dot(Vector2D(0.0, 1.0))
         0.0
         """
         return self.x * other.x + self.y * other.y
