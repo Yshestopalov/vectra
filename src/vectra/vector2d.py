@@ -13,6 +13,7 @@ class Vector2D:
     A 2D vector involving arithmetic (e.g. addition, subtraction) and geometric operations (e.g. distance, dot product).
 
     Vector2D is mutable, when you need to make a copy use .copy() to safely create a duplicate.
+    Vector2D uses a screen-space coordinate convention: Y axis increases downwards.
 
     Attributes:
         x (float): Vector's horizontal component.
@@ -82,7 +83,7 @@ class Vector2D:
 
     def __truediv__(self, scalar: float) -> Vector2D:
         """
-        Scale the vector by the reciprocal of a scalar (e.g. 1/2, 1/3, 14/15).
+        Scale the vector by the reciprocal of a scalar (e.g. 1/2, 1/3, 3/5).
 
         Args:
             scalar: Value to scale the vector by.
@@ -177,3 +178,81 @@ class Vector2D:
         self.y /= mag
 
         return self
+
+    @classmethod
+    def zero(cls) -> Vector2D:
+        """
+        Construct the zero vector.
+
+        Returns:
+            A new vector at (0, 0).
+
+        >>> Vector2D.zero()
+        Vector2D(0, 0)
+        """
+        return cls(0, 0)
+        
+    @classmethod
+    def one(cls) -> Vector2D:
+        """
+        Construct the one vector.
+
+        Returns:
+            A new vector at (1, 1).
+
+        >>> Vector2D.one()
+        Vector2D(1, 1)
+        """
+        return cls(1, 1)
+
+    @classmethod
+    def up(cls) -> Vector2D:
+        """
+        Construct the up vector.
+
+        Returns:
+            A new vector at (0, -1).
+
+        >>> Vector2D.up()
+        Vector2D(0, -1)
+        """
+        return cls(0, -1)
+
+    @classmethod
+    def down(cls) -> Vector2D:
+        """
+        Construct the down vector.
+
+        Returns:
+            A new vector at (0, 1).
+
+        >>> Vector2D.down()
+        Vector2D(0, 1)
+        """
+        return cls(0, 1)
+
+    @classmethod
+    def left(cls) -> Vector2D:
+        """
+        Construct the left vector.
+
+        Returns:
+            A new vector at (-1, 0).
+
+        >>> Vector2D.left()
+        Vector2D(-1, 0)
+        """
+        return cls(-1, 0)
+
+    @classmethod
+    def right(cls) -> Vector2D:
+        """
+        Construct the right vector.
+
+        Returns:
+            A new vector at (1, 0).
+
+        >>> Vector2D.right()
+        Vector2D(1, 0)
+        """
+        return cls(1, 0)
