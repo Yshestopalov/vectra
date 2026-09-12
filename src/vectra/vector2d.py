@@ -43,6 +43,9 @@ class Vector2D:
         Returns:
             The sum of the two vectors.
         """
+        if not isinstance(other, Vector2D):
+            return NotImplemented
+    
         return Vector2D(self.x + other.x, self.y + other.y)
 
     def __sub__(self, other: Vector2D) -> Vector2D:
@@ -55,6 +58,9 @@ class Vector2D:
         Returns:
             The difference of the two vectors.
         """
+        if not isinstance(other, Vector2D):
+            return NotImplemented
+        
         return Vector2D(self.x - other.x, self.y - other.y)
 
     def __mul__(self, scalar: float) -> Vector2D:
@@ -67,6 +73,9 @@ class Vector2D:
         Returns:
             The scaled vector.
         """
+        if not isinstance(scalar, (int, float)):
+            return NotImplemented
+        
         return Vector2D(self.x * scalar, self.y * scalar)
 
     def __rmul__(self, scalar: float) -> Vector2D:
@@ -91,6 +100,9 @@ class Vector2D:
         Returns:
             The scaled vector.
         """
+        if not isinstance(scalar, (int, float)):
+            return NotImplemented
+        
         return Vector2D(self.x / scalar, self.y / scalar)
 
     def __neg__(self) -> Vector2D:
