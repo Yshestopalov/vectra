@@ -1,5 +1,5 @@
 """
-2D vector implementation involving arithmetic (e.g. addition, subtraction) and geometric operations (e.g. distance, dot product).
+This module includes Vector2D involving arithmetic (e.g. addition, subtraction) and geometric operations (e.g. distance, dot product).
 
 Part of the vectra library. Vector2D is mutable, new vector is created in operations involving two or more vectors.
 """
