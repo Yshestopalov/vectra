@@ -28,6 +28,7 @@ def test_eq_different():
 
 def test_eq_non_vector():
     assert Vector2D(1, 2) != 5
+    assert Vector2D(1, 2) != "1, 2"
 
 
 def test_unhashable():
@@ -235,6 +236,63 @@ def test_left_and_right_are_opposite():
 def test_up_matches_screen_space_convention():
     assert Vector2D.up().y < 0
     assert Vector2D.down().y > 0
+
+
+def test_distance_to():
+    assert Vector2D(0, 0).distance_to(Vector2D(3, 4)) == 5.0
+
+
+def test_distance_to_same():
+    assert Vector2D(1, 1).distance_to(Vector2D(1, 1)) == 0.0
+
+
+def test_distance_to_non_vector():
+    with pytest.raises(AttributeError):
+        Vector2D(0, 0).distance_to(5)
+
+
+def test_distance_to_symmetric():
+    a = Vector2D(1, 2)
+    b = Vector2D(4, 6)
+    assert a.distance_to(b) == b.distance_to(a)
+
+
+def test_distance_squared_to():
+    assert Vector2D(0, 0).distance_squared_to(Vector2D(3, 4)) == 25.0
+
+
+def test_distance_squared_to_same():
+    assert Vector2D(1, 1).distance_squared_to(Vector2D(1, 1)) == 0.0
+
+
+def test_distance_squared_to_non_vector():
+    with pytest.raises(AttributeError):
+        Vector2D(0, 0).distance_squared_to(5)
+
+
+def test_distance_squared_to_symmetric():
+    a = Vector2D(1, 2)
+    b = Vector2D(4, 6)
+    assert a.distance_squared_to(b) == b.distance_squared_to(a)
+
+
+def test_manhattan_distance_to():
+    assert Vector2D(0, 0).manhattan_distance_to(Vector2D(3, 4)) == 7
+
+
+def test_manhattan_distance_to_same():
+    assert Vector2D(1, 1).manhattan_distance_to(Vector2D(1, 1)) == 0.0
+
+
+def test_manhattan_distance_to_non_vector():
+    with pytest.raises(AttributeError):
+        Vector2D(0, 0).manhattan_distance_to(5)
+
+
+def test_manhattan_distance_to_symmetric():
+    a = Vector2D(1, 2)
+    b = Vector2D(4, 6)
+    assert a.manhattan_distance_to(b) == b.manhattan_distance_to(a)
 
 
 def test_constructors_return_new_instances():
