@@ -99,6 +99,9 @@ class Vector2D:
 
         Returns:
             The scaled vector.
+
+        Raises:
+            ZeroDivisionError: If scalar is 0.
         """
         if not isinstance(scalar, (int, float)):
             return NotImplemented
@@ -181,6 +184,9 @@ class Vector2D:
         Returns:
             self, the normalized version.
 
+        Raises:
+            ZeroDivisionError: If this vector's magnitude is 0.
+
         >>> Vector2D(3, 4).normalize()
         Vector2D(0.6, 0.8)
         """
@@ -190,6 +196,51 @@ class Vector2D:
         self.y /= mag
 
         return self
+
+    def distance_to(self, other: Vector2D) -> float:
+        """
+        Calculate the Euclidean (straight-line) distance to another vector.
+
+        Args:
+            other: The vector to measure distance to.
+
+        Returns:
+            The distance between this vector and other.
+
+        >>> Vector2D(0, 0).distance_to(Vector2D(3, 4))
+        5.0
+        """
+        return math.sqrt(self.distance_squared_to(other))
+
+    def distance_squared_to(self, other: Vector2D) -> float:
+        """
+        Calculate the squared Euclidean distance to another vector.
+
+        Args:
+            other: The vector to measure the squared distance to.
+
+        Returns:
+            The squared distance between this vector and other.
+
+        >>> Vector2D(0, 0).distance_squared_to(Vector2D(3, 4))
+        25.0
+        """
+        return (self.x - other.x) ** 2 + (self.y - other.y) ** 2
+
+    def manhattan_distance_to(self, other: Vector2D) -> float:
+        """
+        Calculate the Manhattan (grid-based) distance to another vector.
+
+        Args:
+            other: The vector to measure the Manhattan distance to.
+
+        Returns:
+            The Manhattan distance between this vector and other.
+
+        >>> Vector2D(0, 0).manhattan_distance_to(Vector2D(3, 4))
+        7
+        """
+        return abs(self.x - other.x) + abs(self.y - other.y)
 
     @classmethod
     def zero(cls) -> Vector2D:
