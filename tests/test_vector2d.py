@@ -295,6 +295,32 @@ def test_manhattan_distance_to_symmetric():
     assert a.manhattan_distance_to(b) == b.manhattan_distance_to(a)
 
 
+def test_angle_along_positive_x_axis():
+    assert Vector2D(1, 0).angle() == 0.0
+
+
+def test_angle_to_perpendicular_vector():
+    assert math.isclose(Vector2D(1, 0).angle_to(Vector2D(0, 1)), math.pi / 2)
+
+
+def test_angle_to_parallel_vector():
+    assert math.isclose(Vector2D(2, 0).angle_to(Vector2D(5, 0)), 0.0)
+
+
+def test_angle_to_zero_vector_raises():
+    with pytest.raises(ZeroDivisionError):
+        Vector2D(1, 0).angle_to(Vector2D(0, 0))
+
+
+def test_direction_to():
+    assert Vector2D(0, 0).direction_to(Vector2D(5, 0)) == Vector2D(1.0, 0.0)
+
+
+def test_direction_to_zero_distance_raises():
+    with pytest.raises(ZeroDivisionError):
+        Vector2D(0, 0).direction_to(Vector2D(0, 0))
+
+
 def test_constructors_return_new_instances():
     assert Vector2D.zero() is not Vector2D.zero()
     assert Vector2D.one() is not Vector2D.one()
