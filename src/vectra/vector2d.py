@@ -247,7 +247,7 @@ class Vector2D:
         Calculate this vector's angle from the positive x-axis.
 
         Returns:
-            The angle in radians.
+            The angle in radians, in (-pi, pi].
 
         >>> Vector2D(1, 0).angle()
         0.0
@@ -262,7 +262,10 @@ class Vector2D:
             other: The vector to measure the angle to.
 
         Returns:
-            The angle in radians.
+            The angle in radians, in [0, pi].
+
+        Raises:
+            ZeroDivisionError: If either vector has a magnitude of 0.
 
         >>> Vector2D(1, 0).angle_to(Vector2D(0, 1))
         1.5707963267948966
