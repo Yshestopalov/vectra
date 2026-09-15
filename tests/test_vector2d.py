@@ -312,6 +312,12 @@ def test_angle_to_zero_vector_raises():
         Vector2D(1, 0).angle_to(Vector2D(0, 0))
 
 
+def test_angle_to_symmetric():
+    a = Vector2D(1, 0)
+    b = Vector2D(0, 1)
+    assert math.isclose(a.angle_to(b), b.angle_to(a))
+
+
 def test_direction_to():
     assert Vector2D(0, 0).direction_to(Vector2D(5, 0)) == Vector2D(1.0, 0.0)
 
