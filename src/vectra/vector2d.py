@@ -223,7 +223,7 @@ class Vector2D:
             The squared distance between this vector and other.
 
         >>> Vector2D(0, 0).distance_squared_to(Vector2D(3, 4))
-        25.0
+        25
         """
         return (self.x - other.x) ** 2 + (self.y - other.y) ** 2
 
