@@ -242,6 +242,54 @@ class Vector2D:
         """
         return abs(self.x - other.x) + abs(self.y - other.y)
 
+    def angle(self) -> float:
+        """
+        Calculate this vector's angle from the positive x-axis.
+
+        Returns:
+            The angle in radians.
+
+        >>> Vector2D(1, 0).angle()
+        0.0
+        """
+        return math.atan2(self.y, self.x)
+
+    def angle_to(self, other: Vector2D) -> float:
+        """
+        Calculate the unsigned angle between this vector and another.
+
+        Args:
+            other: The vector to measure the angle to.
+
+        Returns:
+            The angle in radians.
+
+        >>> Vector2D(1, 0).angle_to(Vector2D(0, 1))
+        1.5707963267948966
+        """
+        cos_theta = self.dot(other) / (self.magnitude() * other.magnitude())
+        cos_theta = max(-1, min(1, cos_theta))
+
+        return math.acos(cos_theta)
+
+    def direction_to(self, other: Vector2D) -> Vector2D:
+        """
+        Calculate the normalized direction from this vector to another.
+
+        Args:
+            other: The vector to point towards.
+
+        Returns:
+            A new unit vector pointing from self towards other.
+
+        Raises:
+            ZeroDivisionError: If self and other are the same vector.
+
+        >>> Vector2D(0, 0).direction_to(Vector2D(0, 5))
+        Vector2D(0.0, 1.0)
+        """
+        return (other - self).normalize()
+
     @classmethod
     def zero(cls) -> Vector2D:
         """
