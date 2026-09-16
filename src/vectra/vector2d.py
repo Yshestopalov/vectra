@@ -293,6 +293,74 @@ class Vector2D:
         """
         return (other - self).normalize()
 
+    def rotated(self, radians: float) -> Vector2D:
+        """
+        Calculate a new vector rotated by an angle.
+
+        Args:
+            radians: Angle to rotate by, in radians.
+
+        Returns:
+            A new vector, rotated from this one.
+
+        >>> result = Vector2D(1, 0).rotated(math.pi / 2)
+        >>> round(result.x, 10), round(result.y, 10)
+        (0.0, 1.0)
+        """
+        cos_a = math.cos(radians)
+        sin_a = math.sin(radians)
+
+        return Vector2D(
+            self.x * cos_a - self.y * sin_a,
+            self.x * sin_a + self.y * cos_a
+        )
+
+    def rotate(self, radians: float) -> Vector2D:
+        """
+        Rotate this vector by an angle.
+
+        Args:
+            radians: Angle to rotate by, in radians.
+
+        Returns:
+            self, after rotating in place.
+
+        >>> v = Vector2D(1, 0)
+        >>> _ = v.rotate(math.pi / 2)
+        >>> round(v.x, 10), round(v.y, 10)
+        (0.0, 1.0)
+        """
+        rotated = self.rotated(radians)
+
+        self.x = rotated.x
+        self.y = rotated.y
+
+        return self
+    
+    def perpendicular(self) -> Vector2D:
+        """
+        Calculate a new vector rotated 90 degrees counter clockwise.
+
+        Returns:
+            A new vector, perpendicular to this one.
+
+        >>> Vector2D(1, 0).perpendicular()
+        Vector2D(0, 1)
+        """
+        return Vector2D(-self.y, self.x)
+
+    def perpendicular_cw(self) -> Vector2D:
+        """
+        Calculate a new vector rotated 90 degrees clockwise.
+
+        Returns:
+            A new vector, perpendicular to this one.
+
+        >>> Vector2D(1, 0).perpendicular_cw()
+        Vector2D(0, -1)
+        """
+        return Vector2D(self.y, -self.x)
+
     @classmethod
     def zero(cls) -> Vector2D:
         """
