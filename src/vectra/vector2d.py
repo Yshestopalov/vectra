@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import math
 
+from .utils import lerp
+
 class Vector2D:
     """
     A 2D vector involving arithmetic (e.g. addition, subtraction) and geometric operations (e.g. distance, dot product).
@@ -360,6 +362,50 @@ class Vector2D:
         Vector2D(0, -1)
         """
         return Vector2D(self.y, -self.x)
+
+    def lerp(self, other: Vector2D, t: float) -> Vector2D:
+        """
+        Linearly interpolate from this vector toward another.
+        
+        Args:
+            other: The vector to interpolate toward.
+            t: Interpolation factor, in [0, 1].
+
+        Returns:
+            A new vector, interpolated between self and other.
+
+        >>> Vector2D(0, 0).lerp(Vector2D(10, 10), 0.5)
+        Vector2D(5.0, 5.0)
+        """
+        return Vector2D(lerp(self.x, other.x, t), lerp(self.y, other.y, t))
+
+    def move_toward(self, target: Vector2D, max_distance: float) -> Vector2D:
+        """
+        Calculate a new vector stepped toward a target.
+
+        Args: 
+            target: The vector to move toward.
+            max_distance: The maximum distance to move by this call.
+
+        Returns:
+            A new vector, stepped toward target. If self and target are the same point, returns a copy of self.
+
+        >>> Vector2D(0, 0).move_toward(Vector2D(10, 0), 4)
+        Vector2D(4.0, 0.0)
+        >>> Vector2D(0, 0).move_toward(Vector2D(2, 0), 10)
+        Vector2D(2, 0)
+        >>> Vector2D(3, 4).move_toward(Vector2D(3, 4), 5)
+        Vector2D(3, 4)
+        """
+        remaining = self.distance_to(target)
+
+        if remaining == 0:
+            return self.copy()
+
+        if remaining <= max_distance:
+            return target.copy()
+
+        return self + self.direction_to(target) * max_distance
 
     @classmethod
     def zero(cls) -> Vector2D:
