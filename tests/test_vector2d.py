@@ -217,27 +217,6 @@ def test_normalize_zero_vector():
         Vector2D(0, 0).normalize()
 
 
-def test_zero():
-    assert Vector2D.zero() == Vector2D(0, 0)
-
-
-def test_one():
-    assert Vector2D.one() == Vector2D(1, 1)
-
-
-def test_up_and_down_are_opposite():
-    assert Vector2D.up() == -Vector2D.down()
-
-
-def test_left_and_right_are_opposite():
-    assert Vector2D.left() == -Vector2D.right()
-
-
-def test_up_matches_screen_space_convention():
-    assert Vector2D.up().y < 0
-    assert Vector2D.down().y > 0
-
-
 def test_distance_to():
     assert Vector2D(0, 0).distance_to(Vector2D(3, 4)) == 5.0
 
@@ -325,6 +304,89 @@ def test_direction_to():
 def test_direction_to_zero_distance_raises():
     with pytest.raises(ZeroDivisionError):
         Vector2D(0, 0).direction_to(Vector2D(0, 0))
+
+
+def test_rotated_quarter_turn():
+    result = Vector2D(1, 0).rotated(math.pi / 2)
+    assert math.isclose(result.x, 0, abs_tol=1e-9)
+    assert math.isclose(result.y, 1, abs_tol=1e-9)
+
+
+def test_rotated_full_turn():
+    v = Vector2D(3, 4)
+    result = v.rotated(2 * math.pi)
+    assert math.isclose(result.x, v.x, abs_tol=1e-9)
+    assert math.isclose(result.y, v.y, abs_tol=1e-9)
+
+
+def test_rotated_preserves_magnitude():
+    v = Vector2D(3, 4)
+    result = v.rotated(1.234)
+    assert math.isclose(result.magnitude(), v.magnitude())
+
+
+def test_rotated_returns_new_instance():
+    v = Vector2D(1, 0)
+    result = v.rotated(math.pi / 2)
+    assert result is not v
+
+
+def test_rotated_does_not_mutate():
+    v = Vector2D(1, 0)
+    v.rotated(math.pi / 2)
+    assert v == Vector2D(1, 0)
+
+
+def test_rotate_mutates_in_place():
+    v = Vector2D(1, 0)
+    result = v.rotate(math.pi / 2)
+    assert result is v
+    assert math.isclose(v.x, 0, abs_tol=1e-9)
+    assert math.isclose(v.y, 1, abs_tol=1e-9)
+
+
+def test_perpendicular():
+    assert Vector2D(1, 0).perpendicular() == Vector2D(0, 1)
+
+
+def test_perpendicular_preserves_magnitude():
+    v = Vector2D(3, 4)
+    assert math.isclose(v.perpendicular().magnitude(), v.magnitude())
+
+
+def test_perpendicular_returns_new_instance():
+    v = Vector2D(1, 0)
+    assert v.perpendicular() is not v
+
+
+def test_perpendicular_cw():
+    assert Vector2D(1, 0).perpendicular_cw() == Vector2D(0, -1)
+
+
+def test_perpendicular_and_perpendicular_cw_are_opposite():
+    v = Vector2D(3, 4)
+    assert v.perpendicular() == -v.perpendicular_cw()
+
+
+def test_zero():
+    assert Vector2D.zero() == Vector2D(0, 0)
+
+
+def test_one():
+    assert Vector2D.one() == Vector2D(1, 1)
+
+
+def test_up_and_down_are_opposite():
+    assert Vector2D.up() == -Vector2D.down()
+
+
+def test_left_and_right_are_opposite():
+    assert Vector2D.left() == -Vector2D.right()
+
+
+def test_up_matches_screen_space_convention():
+    assert Vector2D.up().y < 0
+    assert Vector2D.down().y > 0
 
 
 def test_constructors_return_new_instances():
