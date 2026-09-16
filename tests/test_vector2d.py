@@ -151,7 +151,7 @@ def test_neg_new_instance():
     assert result is not a
 
 
-def test_arithmetics_do_not_mutate_operands():
+def test_arithmetics_do_not_mutate():
     a = Vector2D(5, 5)
     b = Vector2D(2, 1)
 
@@ -366,6 +366,75 @@ def test_perpendicular_cw():
 def test_perpendicular_and_perpendicular_cw_are_opposite():
     v = Vector2D(3, 4)
     assert v.perpendicular() == -v.perpendicular_cw()
+
+
+def test_lerp_midpoint():
+    assert Vector2D(0, 0).lerp(Vector2D(10, 10), 0.5) == Vector2D(5.0, 5.0)
+
+
+def test_lerp_endpoints():
+    assert Vector2D(0, 0).lerp(Vector2D(10, 10), 0) == Vector2D(0, 0)
+    assert Vector2D(0, 0).lerp(Vector2D(10, 10), 1) == Vector2D(10, 10)
+
+
+def test_lerp_returns_new_instance():
+    a = Vector2D(0, 0)
+    b = Vector2D(10, 10)
+    result = a.lerp(b, 0.5)
+    assert result is not a
+    assert result is not b
+
+
+def test_lerp_does_not_mutate():
+    a = Vector2D(0, 0)
+    b = Vector2D(10, 10)
+    a.lerp(b, 0.5)
+    assert a == Vector2D(0, 0)
+    assert b == Vector2D(10, 10)
+
+
+def test_lerp_extrapolates_beyond():
+    assert Vector2D(0, 0).lerp(Vector2D(10, 10), 2) == Vector2D(20, 20)
+
+
+def test_move_toward_partial_step():
+    result = Vector2D(0, 0).move_toward(Vector2D(10, 0), 4)
+    assert result == Vector2D(4.0, 0.0)
+
+
+def test_move_toward_does_not_overshoot():
+    result = Vector2D(0, 0).move_toward(Vector2D(2, 0), 10)
+    assert result == Vector2D(2.0, 0.0)
+
+
+def test_move_toward_already_at_target():
+    result = Vector2D(3, 4).move_toward(Vector2D(3, 4), 5)
+    assert result == Vector2D(3, 4)
+
+
+def test_move_toward_returns_new_instance():
+    a = Vector2D(0, 0)
+    target = Vector2D(10, 0)
+    result = a.move_toward(target, 4)
+    assert result is not a
+
+
+def test_move_toward_does_not_mutate_self():
+    a = Vector2D(0, 0)
+    a.move_toward(Vector2D(10, 0), 4)
+    assert a == Vector2D(0, 0)
+
+
+def test_move_toward_preserves_distance_relationship():
+    a = Vector2D(0, 0)
+    target = Vector2D(10, 0)
+    result = a.move_toward(target, 4)
+    assert result.distance_to(target) < a.distance_to(target)
+
+
+def test_move_toward_zero_max_distance():
+    result = Vector2D(0, 0).move_toward(Vector2D(10, 0), 0)
+    assert result == Vector2D(0, 0)
 
 
 def test_zero():
