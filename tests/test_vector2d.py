@@ -286,7 +286,7 @@ def test_angle_to_parallel_vector():
     assert math.isclose(Vector2D(2, 0).angle_to(Vector2D(5, 0)), 0.0)
 
 
-def test_angle_to_zero_vector_raises():
+def test_angle_to_zero():
     with pytest.raises(ZeroDivisionError):
         Vector2D(1, 0).angle_to(Vector2D(0, 0))
 
@@ -301,7 +301,7 @@ def test_direction_to():
     assert Vector2D(0, 0).direction_to(Vector2D(5, 0)) == Vector2D(1.0, 0.0)
 
 
-def test_direction_to_zero_distance_raises():
+def test_direction_to_zero():
     with pytest.raises(ZeroDivisionError):
         Vector2D(0, 0).direction_to(Vector2D(0, 0))
 
@@ -435,6 +435,124 @@ def test_move_toward_preserves_distance_relationship():
 def test_move_toward_zero_max_distance():
     result = Vector2D(0, 0).move_toward(Vector2D(10, 0), 0)
     assert result == Vector2D(0, 0)
+
+
+def test_project_onto():
+    assert Vector2D(2, 2).project_onto(Vector2D(1, 0)) == Vector2D(2.0, 0.0)
+
+
+def test_project_onto_perpendicular():
+    result = Vector2D(0, 5).project_onto(Vector2D(1, 0))
+    assert result == Vector2D(0.0, 0.0)
+
+
+def test_project_onto_parallel():
+    result = Vector2D(3, 0).project_onto(Vector2D(1, 0))
+    assert result == Vector2D(3.0, 0.0)
+
+
+def test_project_onto_zero():
+    with pytest.raises(ZeroDivisionError):
+        Vector2D(1, 1).project_onto(Vector2D(0, 0))
+
+
+def test_project_onto_returns_new_instance():
+    a = Vector2D(2, 2)
+    other = Vector2D(1, 0)
+    result = a.project_onto(other)
+    assert result is not a
+
+
+def test_project_onto_does_not_mutate():
+    a = Vector2D(2, 2)
+    other = Vector2D(1, 0)
+    a.project_onto(other)
+    assert a == Vector2D(2, 2)
+    assert other == Vector2D(1, 0)
+
+
+def test_reject_from():
+    assert Vector2D(2, 2).reject_from(Vector2D(1, 0)) == Vector2D(0.0, 2.0)
+
+
+def test_reject_from_parallel():
+    result = Vector2D(3, 0).reject_from(Vector2D(1, 0))
+    assert result == Vector2D(0.0, 0.0)
+
+
+def test_reject_from_zero():
+    with pytest.raises(ZeroDivisionError):
+        Vector2D(1, 1).reject_from(Vector2D(0, 0))
+
+
+def test_project_and_reject_combine_to_self():
+    a = Vector2D(3, 4)
+    other = Vector2D(1, 0)
+    result = a.project_onto(other) + a.reject_from(other)
+    assert result == a
+
+
+def test_reject_from_returns_new_instance():
+    a = Vector2D(2, 2)
+    other = Vector2D(1, 0)
+    result = a.reject_from(other)
+    assert result is not a
+
+
+def test_reflect_off_horizontal_surface():
+    assert Vector2D(1, -1).reflect(Vector2D(0, 1)) == Vector2D(1.0, 1.0)
+
+
+def test_reflect_straight_hit_reverses():
+    result = Vector2D(0, -5).reflect(Vector2D(0, 1))
+    assert result == Vector2D(0.0, 5.0)
+
+
+def test_reflect_parallel_to_surface_unchanged():
+    result = Vector2D(1, 0).reflect(Vector2D(0, 1))
+    assert result == Vector2D(1.0, 0.0)
+
+
+def test_reflect_preserves_magnitude():
+    v = Vector2D(3, -4)
+    normal = Vector2D(0, 1)
+    assert math.isclose(v.reflect(normal).magnitude(), v.magnitude())
+
+
+def test_reflect_returns_new_instance():
+    v = Vector2D(1, -1)
+    normal = Vector2D(0, 1)
+    result = v.reflect(normal)
+    assert result is not v
+
+
+def test_reflect_does_not_mutate():
+    v = Vector2D(1, -1)
+    normal = Vector2D(0, 1)
+    v.reflect(normal)
+    assert v == Vector2D(1, -1)
+
+
+def test_cross_perpendicular():
+    assert Vector2D(1, 0).cross(Vector2D(0, 1)) == 1
+
+
+def test_cross_parallel_is_zero():
+    assert Vector2D(2, 0).cross(Vector2D(5, 0)) == 0
+
+
+def test_cross_anti_commutative():
+    a = Vector2D(1, 0)
+    b = Vector2D(0, 1)
+    assert a.cross(b) == -b.cross(a)
+
+
+def test_cross_sign_indicates_direction():
+    a = Vector2D(1, 0)
+    counter_clockwise = Vector2D(0, 1)
+    clockwise = Vector2D(0, -1)
+    assert a.cross(counter_clockwise) > 0
+    assert a.cross(clockwise) < 0
 
 
 def test_zero():
