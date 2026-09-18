@@ -407,6 +407,72 @@ class Vector2D:
 
         return self + self.direction_to(target) * max_distance
 
+    def project_onto(self, other: Vector2D) -> Vector2D:
+        """
+        Calculate the projection of this vector onto another.
+
+        Args:
+            other: The vector to project onto.
+
+        Returns:
+            A new vector, the projection of self onto other.
+
+        Raises:
+            ZeroDivisionError: If other has a magnitude of 0.
+
+        >>> Vector2D(2, 2).project_onto(Vector2D(1, 0))
+        Vector2D(2.0, 0.0)
+        """
+        return other * (self.dot(other) / other.dot(other))
+
+    def reject_from(self, other: Vector2D) -> Vector2D:
+        """
+        Calculate the rejection of this vector from another.
+
+        Args:
+            other: The vector to reject from.
+
+        Returns:
+            A new vector, the rejection of self from other.
+
+        Raises:
+            ZeroDivisionError: If other has a magnitude of 0.
+
+        >>> Vector2D(2, 2).reject_from(Vector2D(1, 0))
+        Vector2D(0.0, 2.0)
+        """
+        return self - self.project_onto(other)
+
+    def reflect(self, normal: Vector2D) -> Vector2D:
+        """
+        Calculate this vector reflected off a surface.
+
+        Args:
+            normal: The unit normal of the surface to reflect off, must be normalized.
+
+        Returns:
+            A new vector, reflected across normal.
+
+        >>> Vector2D(1, -1).reflect(Vector2D(0, 1))
+        Vector2D(1, 1)
+        """
+        return self - normal * (2 * self.dot(normal))
+
+    def cross(self, other: Vector2D) -> float:
+        """
+        Calculate the 2D scalar cross product with another vector.
+
+        Args:
+            other: The vector to cross with.
+
+        Returns:
+            The scalar cross product.
+
+        >>> Vector2D(1, 0).cross(Vector2D(0, 1))
+        1
+        """
+        return self.x * other.y - self.y * other.x
+
     @classmethod
     def zero(cls) -> Vector2D:
         """
