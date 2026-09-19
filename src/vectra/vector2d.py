@@ -7,8 +7,9 @@ Part of the vectra library. Vector2D is mutable, new vector is created in operat
 from __future__ import annotations
 
 import math
+import random
 
-from .utils import lerp
+from .utils import lerp, clamp, approx_equal
 
 class Vector2D:
     """
@@ -472,6 +473,284 @@ class Vector2D:
         1
         """
         return self.x * other.y - self.y * other.x
+    
+    def abs(self) -> Vector2D:
+        """
+        Calculate a new vector with each component's absolute value.
+
+        Returns:
+            A new vector, with non-negative components.
+
+        >>> Vector2D(-1, -2).abs()
+        Vector2D(1, 2)
+        """
+        return Vector2D(abs(self.x), abs(self.y))
+
+    def sign(self) -> Vector2D:
+        """
+        Calculate a new vector indicating each component's sign.
+
+        Returns: 
+            A new vector of -1/0/1 components.
+
+        >>> Vector2D(-5, 3).sign()
+        Vector2D(-1, 1)
+        """
+        def _sign(value: float) -> int:
+            return (value > 0) - (value < 0)
+
+        return Vector2D(_sign(self.x), _sign(self.y))
+
+    def round(self, digits: int = 0) -> Vector2D:
+        """
+        Calculate a new vector with each component rounded.
+
+        Args: 
+            digits: Number of decimal place to round to.
+
+        Returns:
+            A new vector, with rounded components.
+
+        >>> Vector2D(1.234, 5.678).round(1)
+        Vector2D(1.2, 5.7)
+        """
+        return Vector2D(round(self.x, digits), round(self.y, digits))
+
+    def floor(self) -> Vector2D:
+        """
+        Calculate a new vector with each component floored.
+
+        Returns:
+            A new vector, with floored components.
+
+        >>> Vector2D(1.7, -1.2).floor()
+        Vector2D(1, -2)
+        """
+        return Vector2D(math.floor(self.x), math.floor(self.y))
+
+    def ceil(self) -> Vector2D:
+        """
+        Calculate a new vector with each component ceiled.
+        
+        Returns:
+            A new vector, with ceiled components.
+
+        >>> Vector2D(1.2, -1.7).ceil()
+        Vector2D(2, -1)
+        """
+        return Vector2D(math.ceil(self.x), math.ceil(self.y))
+
+    def clamp_magnitude(self, max_length: float) -> Vector2D:
+        """
+        Calculate a new vector capped to a maximum length.
+
+        Args:
+            max_length: The maximum allowed magnitude.
+
+        Returns:
+            A new vector, with magnitude at most max_length.
+
+        >>> Vector2D(3, 4).clamp_magnitude(2.5)
+        Vector2D(1.5, 2.0)
+        """
+        mag = self.magnitude()
+
+        if mag <= max_length:
+            return self.copy()
+
+        return self * (max_length / mag)
+
+    def clamp(self, minimum: Vector2D, maximum: Vector2D) -> Vector2D:
+        """
+        Calculate a new vector with each component clamped between bounds.
+
+        Args:
+            minimum: Vector's lower bound for each component.
+            maximum: Vector's upper bound for each component.
+
+        Returns:
+            A new vector, component-wise clamped.
+
+        >>> Vector2D(15, -5).clamp(Vector2D(0, 0), Vector2D(10, 10))
+        Vector2D(10, 0)
+        """
+        return Vector2D(
+            clamp(self.x, minimum.x, maximum.x),
+            clamp(self.y, minimum.y, maximum.y),
+        )
+
+    def is_zero(self, epsilon: float = 1e-9) -> bool:
+        """
+        Check whether this vector's magnitude is approximately 0.
+
+        Args:
+            epsilon: Maximum magnitude still considered 0.
+
+        Returns:
+            True if the magnitude is below epsilon.
+
+        >>> Vector2D(0, 0).is_zero()
+        True
+        """
+        return self.magnitude() < epsilon
+
+    def is_normalized(self, epsilon: float = 1e-9) -> bool:
+        """
+        Check whether this vector's magnitude is approximately 1.
+
+        Args:
+            epsilon: Maximum allowed deviation from 1.
+
+        Returns:
+            True if the magnitude is within epsilon of 1.
+
+        >>> Vector2D(1, 0).is_normalized()
+        True
+        """
+        return abs(self.magnitude() - 1) < epsilon
+
+    def is_approx_equal(self, other: Vector2D, epsilon: float = 1e-9) -> bool:
+        """
+        Check whether this vector's components are approximately equal to another.
+
+        Args:
+            other: The vector to compare against.
+            epsilon: Maximum allowed difference per component.
+
+        Returns:
+            True if both components are within epsilon of other's.
+
+        >>> Vector2D(0.1 + 0.2, 1).is_approx_equal(Vector2D(0.3, 1))
+        True
+        """
+        return approx_equal(self.x, other.x, epsilon) and approx_equal(self.y, other.y, epsilon)
+
+    def to_tuple(self) -> tuple[float, float]:
+        """
+        Convert this vector to a tuple.
+
+        Returns:
+            A tuple of (x, y).
+
+        >>> Vector2D(3, 4).to_tuple()
+        (3, 4)
+        """
+        return (self.x, self.y)
+
+    def to_int_tuple(self) -> tuple[int, int]:
+        """
+        Convert this vector to an integer tuple.
+
+        Returns:
+            A tuple of (int(x), int(y)).
+
+        >>> Vector2D(3.9, 4.1).to_int_tuple()
+        (3, 4)
+        """
+        return (int(self.x), int(self.y))
+
+    def to_list(self) -> list[float]:
+        """
+        Convert this vector to a list.
+
+        Returns:
+            A list of [x, y].
+
+        >>> Vector2D(3, 4).to_list()
+        [3, 4]
+        """
+        return [self.x, self.y]
+
+    def to_complex(self) -> complex:
+        """
+        Convert this vector to a complex number.
+
+        Returns:
+            A complex number, x + yj.
+
+        >>> Vector2D(3, 4).to_complex()
+        (3+4j)
+        """
+        return complex(self.x, self.y)
+
+    @staticmethod
+    def min(a: Vector2D, b: Vector2D) -> Vector2D:
+        """
+        Calculate the component-wise minimum of two vectors.
+
+        Args:
+            a: The first vector.
+            b: The second vector.
+
+        Returns:
+            A new vector, the component-wise minimum of a and b.
+
+        >>> Vector2D.min(Vector2D(1, 5), Vector2D(3, 2))
+        Vector2D(1, 2)
+        """
+        return Vector2D(min(a.x, b.x), min(a.y, b.y))
+
+    @staticmethod
+    def max(a: Vector2D, b: Vector2D) -> Vector2D:
+        """
+        Calculate the component-wise maximum of two vectors.
+
+        Args:
+            a: The first vector.
+            b: The second vector.
+
+        Returns:
+            A new vector, the component-wise maximum of a and b.
+
+        >>> Vector2D.max(Vector2D(1, 5), Vector2D(3, 2))
+        Vector2D(3, 5)
+        """
+        return Vector2D(max(a.x, b.x), max(a.y, b.y))
+
+    @classmethod
+    def from_angle(cls, radians: float, length: float = 1) -> Vector2D:
+        """
+        Construct a vector pointing at a given angle.
+
+        Args: 
+            radians: Angle from the positive x-axis, in radians.
+            length: Magnitude of the resulting vector.
+
+        Returns:
+            A new vector, at the given angle and length.
+
+        >>> result = Vector2D.from_angle(math.pi / 2)
+        >>> round(result.x, 10), round(result.y, 10)
+        (0.0, 1.0)
+        """
+        return cls(length * math.cos(radians), length * math.sin(radians))
+
+    @classmethod
+    def from_tuple(cls, values: tuple[float, float]) -> Vector2D:
+        """
+        Construct a vector from a tuple.
+
+        Args:
+            values: A two-element tuple.
+
+        Returns:
+            A new vector, with the tuple's components.
+
+        >>> Vector2D.from_tuple((3, 4))
+        Vector2D(3, 4)
+        """
+        x, y = values
+        return cls(x, y)
+
+    @classmethod
+    def random_unit(cls) -> Vector2D:
+        """
+        Construct a random unit-length vector, pointing in any direction.
+
+        Returns:
+            A new vector with magnitude 1 and a random angle.
+        """
+        return cls.from_angle(random.uniform(0, 2 * math.pi)) 
 
     @classmethod
     def zero(cls) -> Vector2D:
