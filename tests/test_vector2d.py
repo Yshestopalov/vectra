@@ -555,6 +555,141 @@ def test_cross_sign_indicates_direction():
     assert a.cross(clockwise) < 0
 
 
+def test_clamp_magnitude_scales_down():
+    assert Vector2D(3, 4).clamp_magnitude(2.5) == Vector2D(1.5, 2.0)
+
+
+def test_clamp_magnitude_short_vector_unchanged():
+    assert Vector2D(1, 1).clamp_magnitude(10) == Vector2D(1, 1)
+
+
+def test_clamp_magnitude_returns_new_instance():
+    v = Vector2D(3, 4)
+    result = v.clamp_magnitude(2.5)
+    assert result is not v
+
+
+def test_clamp_magnitude_does_not_mutate():
+    v = Vector2D(3, 4)
+    v.clamp_magnitude(2.5)
+    assert v == Vector2D(3, 4)
+
+
+def test_clamp_within_bounds():
+    result = Vector2D(5, 5).clamp(Vector2D(0, 0), Vector2D(10, 10))
+    assert result == Vector2D(5, 5)
+
+
+def test_clamp_above_bounds():
+    result = Vector2D(15, -5).clamp(Vector2D(0, 0), Vector2D(10, 10))
+    assert result == Vector2D(10, 0)
+
+
+def test_clamp_returns_new_instance():
+    v = Vector2D(15, -5)
+    result = v.clamp(Vector2D(0, 0), Vector2D(10, 10))
+    assert result is not v
+
+
+def test_abs():
+    assert Vector2D(-3, 4).abs() == Vector2D(3, 4)
+
+
+def test_abs_returns_new_instance():
+    v = Vector2D(-3, 4)
+    assert v.abs() is not v
+
+
+def test_sign_positive_and_negative():
+    assert Vector2D(-5, 3).sign() == Vector2D(-1, 1)
+
+
+def test_sign_zero_component():
+    assert Vector2D(0, -2).sign() == Vector2D(0, -1)
+
+
+def test_round():
+    assert Vector2D(1.234, 5.678).round(1) == Vector2D(1.2, 5.7)
+
+
+def test_round_default_digits():
+    assert Vector2D(1.4, 1.6).round() == Vector2D(1, 2)
+
+
+def test_floor():
+    assert Vector2D(1.7, -1.2).floor() == Vector2D(1, -2)
+
+
+def test_ceil():
+    assert Vector2D(1.2, -1.7).ceil() == Vector2D(2, -1)
+
+
+def test_is_zero_true():
+    assert Vector2D(0, 0).is_zero()
+
+
+def test_is_zero_false():
+    assert not Vector2D(0.1, 0).is_zero()
+
+
+def test_is_normalized_true():
+    assert Vector2D(1, 0).is_normalized()
+
+
+def test_is_normalized_false():
+    assert not Vector2D(2, 0).is_normalized()
+
+
+def test_is_approx_equal_true():
+    assert Vector2D(0.1 + 0.2, 1).is_approx_equal(Vector2D(0.3, 1))
+
+
+def test_is_approx_equal_false():
+    assert not Vector2D(1, 1).is_approx_equal(Vector2D(1.1, 1))
+
+
+def test_to_tuple():
+    assert Vector2D(3, 4).to_tuple() == (3, 4)
+
+
+def test_to_int_tuple():
+    assert Vector2D(3.9, 4.1).to_int_tuple() == (3, 4)
+
+
+def test_to_list():
+    assert Vector2D(3, 4).to_list() == [3, 4]
+
+
+def test_to_complex():
+    assert Vector2D(3, 4).to_complex() == complex(3, 4)
+
+
+def test_from_angle():
+    result = Vector2D.from_angle(math.pi / 2)
+    assert math.isclose(result.x, 0, abs_tol=1e-9)
+    assert math.isclose(result.y, 1, abs_tol=1e-9)
+
+
+def test_from_angle_with_length():
+    assert Vector2D.from_angle(0, length=5) == Vector2D(5.0, 0.0)
+
+
+def test_from_tuple():
+    assert Vector2D.from_tuple((3, 4)) == Vector2D(3, 4)
+
+
+def test_random_unit_has_magnitude_one():
+    assert math.isclose(Vector2D.random_unit().magnitude(), 1.0)
+
+
+def test_min():
+    assert Vector2D.min(Vector2D(1, 5), Vector2D(3, 2)) == Vector2D(1, 2)
+
+
+def test_max():
+    assert Vector2D.max(Vector2D(1, 5), Vector2D(3, 2)) == Vector2D(3, 5)
+
+
 def test_zero():
     assert Vector2D.zero() == Vector2D(0, 0)
 
