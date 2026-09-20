@@ -506,7 +506,7 @@ class Vector2D:
         Calculate a new vector with each component rounded.
 
         Args: 
-            digits: Number of decimal place to round to.
+            digits: Number of decimal places to round to.
 
         Returns:
             A new vector, with rounded components.
