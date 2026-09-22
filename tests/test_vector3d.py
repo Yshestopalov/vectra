@@ -180,3 +180,42 @@ def test_copy_is_independent():
     b.x = 9
 
     assert a.x == 1
+
+
+def test_dot_orthogonal():
+    assert Vector3D(1, 0, 0).dot(Vector3D(0, 1, 0)) == 0.0
+
+
+def test_dot_parallel():
+    assert Vector3D(2, 0, 0).dot(Vector3D(3, 0, 0)) == 6.0
+
+
+def test_dot_general():
+    assert Vector3D(1, 2, 3).dot(Vector3D(4, 5, 6)) == 32.0
+
+
+def test_magnitude():
+    assert Vector3D(2, 3, 6).magnitude() == 7.0
+
+
+def test_magnitude_zero_vector():
+    assert Vector3D(0, 0, 0).magnitude() == 0.0
+
+
+def test_normalize_produces_unit_length():
+    v = Vector3D(2, 3, 6)
+    v.normalize()
+
+    assert math.isclose(v.magnitude(), 1.0)
+
+
+def test_normalize_returns_self():
+    v = Vector3D(2, 3, 6)
+    result = v.normalize()
+
+    assert result is v
+
+
+def test_normalize_zero_vector():
+    with pytest.raises(ZeroDivisionError):
+        Vector3D(0, 0, 0).normalize()
