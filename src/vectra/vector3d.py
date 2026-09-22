@@ -6,6 +6,8 @@ Part of the vectra library. Vector3D is mutable, new vector is created in operat
 
 from __future__ import annotations
 
+import math
+
 
 class Vector3D:
     """
@@ -151,7 +153,7 @@ class Vector3D:
         """
         return Vector3D(self.x, self.y, self.z)
 
-        def dot(self, other: Vector3D) -> float:
+    def dot(self, other: Vector3D) -> float:
         """
         Calculate the dot product of two vectors.
 
@@ -188,8 +190,8 @@ class Vector3D:
         Raises:
             ZeroDivisionError: If this vector's magnitude is 0.
 
-        >>> Vector3D(2, 3, 6).normalize()
-        Vector3D(0.2857142857142857, 0.42857142857142855, 0.8571428571428571)
+        >>> Vector3D(0, 3, 4).normalize()
+        Vector3D(0.0, 0.6, 0.8)
         """
         mag = self.magnitude()
 

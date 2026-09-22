@@ -3,6 +3,7 @@ Tests for the Vector3D class.
 """
 
 import pytest
+import math
 
 from vectra import Vector3D
 
