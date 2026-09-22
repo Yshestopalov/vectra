@@ -150,3 +150,51 @@ class Vector3D:
             A new instance of Vector3D with the same components.
         """
         return Vector3D(self.x, self.y, self.z)
+
+        def dot(self, other: Vector3D) -> float:
+        """
+        Calculate the dot product of two vectors.
+
+        Args:
+            other: The vector to dot with.
+
+        Returns:
+            The scalar dot product.
+
+        >>> Vector3D(1.0, 0.0, 0.0).dot(Vector3D(0.0, 1.0, 0.0))
+        0.0
+        """
+        return self.x * other.x + self.y * other.y + self.z * other.z
+
+    def magnitude(self) -> float:
+        """
+        Calculate the length of the vector.
+
+        Returns:
+            The magnitude of the vector.
+
+        >>> Vector3D(2, 3, 6).magnitude()
+        7.0
+        """
+        return math.hypot(self.x, self.y, self.z)
+
+    def normalize(self) -> Vector3D:
+        """
+        Calculate the unit vector of a vector.
+
+        Returns:
+            self, the normalized version.
+
+        Raises:
+            ZeroDivisionError: If this vector's magnitude is 0.
+
+        >>> Vector3D(2, 3, 6).normalize()
+        Vector3D(0.2857142857142857, 0.42857142857142855, 0.8571428571428571)
+        """
+        mag = self.magnitude()
+
+        self.x /= mag
+        self.y /= mag
+        self.z /= mag
+
+        return self
