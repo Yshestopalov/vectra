@@ -200,3 +200,87 @@ class Vector3D:
         self.z /= mag
 
         return self
+
+    def distance_to(self, other: Vector3D) -> float:
+        """
+        Calculate the Euclidean (straight-line) distance to another vector.
+
+        Args:
+            other: The vector to measure distance to.
+
+        Returns:
+            The distance between this vector and other.
+
+        >>> Vector3D(0, 0, 0).distance_to(Vector3D(2, 3, 6))
+        7.0
+        """
+        return math.sqrt(self.distance_squared_to(other))
+
+    def distance_squared_to(self, other: Vector3D) -> float:
+        """
+        Calculate the squared Euclidean distance to another vector.
+
+        Args:
+            other: The vector to measure the squared distance to.
+
+        Returns:
+            The squared distance between this vector and other.
+
+        >>> Vector3D(0, 0, 0).distance_squared_to(Vector3D(2, 3, 6))
+        49
+        """
+        return (self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2
+
+    def manhattan_distance_to(self, other: Vector3D) -> float:
+        """
+        Calculate the Manhattan (grid-based) distance to another vector.
+
+        Args:
+            other: The vector to measure the Manhattan distance to.
+
+        Returns:
+            The Manhattan distance between this vector and other.
+
+        >>> Vector3D(0, 0, 0).manhattan_distance_to(Vector3D(2, 3, 6))
+        11
+        """
+        return abs(self.x - other.x) + abs(self.y - other.y) + abs(self.z - other.z)
+
+    def angle_to(self, other: Vector3D) -> float:
+        """
+        Calculate the unsigned angle between this vector and another.
+
+        Args:
+            other: The vector to measure the angle to.
+
+        Returns:
+            The angle in radians, in [0, pi].
+
+        Raises:
+            ZeroDivisionError: If either vector has a magnitude of 0.
+
+        >>> Vector3D(1, 0, 0).angle_to(Vector3D(0, 1, 0))
+        1.5707963267948966
+        """
+        cos_theta = self.dot(other) / (self.magnitude() * other.magnitude())
+        cos_theta = max(-1, min(1, cos_theta))
+
+        return math.acos(cos_theta)
+
+    def direction_to(self, other: Vector3D) -> Vector3D:
+        """
+        Calculate the normalized direction from this vector to another.
+
+        Args:
+            other: The vector to point towards.
+
+        Returns:
+            A new unit vector pointing from self towards other.
+
+        Raises:
+            ZeroDivisionError: If self and other are the same vector.
+
+        >>> Vector3D(0, 0, 0).direction_to(Vector3D(0, 0, 5))
+        Vector3D(0.0, 0.0, 1.0)
+        """
+        return (other - self).normalize()
