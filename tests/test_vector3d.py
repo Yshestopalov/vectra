@@ -220,3 +220,92 @@ def test_normalize_returns_self():
 def test_normalize_zero_vector():
     with pytest.raises(ZeroDivisionError):
         Vector3D(0, 0, 0).normalize()
+
+
+def test_distance_to():
+    assert Vector3D(0, 0, 0).distance_to(Vector3D(2, 3, 6)) == 7.0
+
+
+def test_distance_to_same():
+    assert Vector3D(1, 1, 1).distance_to(Vector3D(1, 1, 1)) == 0.0
+
+
+def test_distance_to_non_vector():
+    with pytest.raises(AttributeError):
+        Vector3D(0, 0, 0).distance_to(5)
+
+
+def test_distance_to_symmetric():
+    a = Vector3D(1, 2, 3)
+    b = Vector3D(4, 6, 8)
+    assert a.distance_to(b) == b.distance_to(a)
+
+
+def test_distance_squared_to():
+    assert Vector3D(0, 0, 0).distance_squared_to(Vector3D(2, 3, 6)) == 49
+
+
+def test_distance_squared_to_same():
+    assert Vector3D(1, 1, 1).distance_squared_to(Vector3D(1, 1, 1)) == 0.0
+
+
+def test_distance_squared_to_non_vector():
+    with pytest.raises(AttributeError):
+        Vector3D(0, 0, 0).distance_squared_to(5)
+
+
+def test_distance_squared_to_symmetric():
+    a = Vector3D(1, 2, 3)
+    b = Vector3D(4, 6, 8)
+    assert a.distance_squared_to(b) == b.distance_squared_to(a)
+
+
+def test_manhattan_distance_to():
+    assert Vector3D(0, 0, 0).manhattan_distance_to(Vector3D(2, 3, 6)) == 11
+
+
+def test_manhattan_distance_to_same():
+    assert Vector3D(1, 1, 1).manhattan_distance_to(Vector3D(1, 1, 1)) == 0.0
+
+
+def test_manhattan_distance_to_non_vector():
+    with pytest.raises(AttributeError):
+        Vector3D(0, 0, 0).manhattan_distance_to(5)
+
+
+def test_manhattan_distance_to_symmetric():
+    a = Vector3D(1, 2, 3)
+    b = Vector3D(4, 6, 8)
+    assert a.manhattan_distance_to(b) == b.manhattan_distance_to(a)
+
+
+def test_angle_to_perpendicular_vector():
+    assert math.isclose(Vector3D(1, 0, 0).angle_to(Vector3D(0, 1, 0)), math.pi / 2)
+
+
+def test_angle_to_parallel_vector():
+    assert math.isclose(Vector3D(2, 0, 0).angle_to(Vector3D(5, 0, 0)), 0.0)
+
+
+def test_angle_to_opposite_vector():
+    assert math.isclose(Vector3D(1, 0, 0).angle_to(Vector3D(-1, 0, 0)), math.pi)
+
+
+def test_angle_to_zero_vector():
+    with pytest.raises(ZeroDivisionError):
+        Vector3D(1, 0, 0).angle_to(Vector3D(0, 0, 0))
+
+
+def test_angle_to_symmetric():
+    a = Vector3D(1, 0, 0)
+    b = Vector3D(0, 1, 0)
+    assert math.isclose(a.angle_to(b), b.angle_to(a))
+
+
+def test_direction_to():
+    assert Vector3D(0, 0, 0).direction_to(Vector3D(0, 0, 5)) == Vector3D(0.0, 0.0, 1.0)
+
+
+def test_direction_to_zero_distance():
+    with pytest.raises(ZeroDivisionError):
+        Vector3D(0, 0, 0).direction_to(Vector3D(0, 0, 0))
