@@ -195,6 +195,11 @@ def test_dot_general():
     assert Vector3D(1, 2, 3).dot(Vector3D(4, 5, 6)) == 32.0
 
 
+def test_dot_non_vector():
+    with pytest.raises(TypeError):
+        Vector3D(1, 2, 3).dot(5)
+
+
 def test_magnitude():
     assert Vector3D(2, 3, 6).magnitude() == 7.0
 
@@ -231,7 +236,7 @@ def test_distance_to_same():
 
 
 def test_distance_to_non_vector():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Vector3D(0, 0, 0).distance_to(5)
 
 
@@ -250,7 +255,7 @@ def test_distance_squared_to_same():
 
 
 def test_distance_squared_to_non_vector():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Vector3D(0, 0, 0).distance_squared_to(5)
 
 
@@ -269,7 +274,7 @@ def test_manhattan_distance_to_same():
 
 
 def test_manhattan_distance_to_non_vector():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Vector3D(0, 0, 0).manhattan_distance_to(5)
 
 
@@ -294,6 +299,11 @@ def test_angle_to_opposite_vector():
 def test_angle_to_zero_vector():
     with pytest.raises(ZeroDivisionError):
         Vector3D(1, 0, 0).angle_to(Vector3D(0, 0, 0))
+
+
+def test_angle_to_non_vector():
+    with pytest.raises(TypeError):
+        Vector3D(1, 0, 0).angle_to(5)
 
 
 def test_angle_to_symmetric():

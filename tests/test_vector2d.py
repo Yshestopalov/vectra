@@ -190,6 +190,11 @@ def test_dot_parallel():
     assert Vector2D(2, 0).dot(Vector2D(3, 0)) == 6.0
 
 
+def test_dot_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(1, 2).dot(5)
+
+
 def test_magnitude():
     assert Vector2D(3, 4).magnitude() == 5.0
 
@@ -226,7 +231,7 @@ def test_distance_to_same():
 
 
 def test_distance_to_non_vector():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Vector2D(0, 0).distance_to(5)
 
 
@@ -245,7 +250,7 @@ def test_distance_squared_to_same():
 
 
 def test_distance_squared_to_non_vector():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Vector2D(0, 0).distance_squared_to(5)
 
 
@@ -264,7 +269,7 @@ def test_manhattan_distance_to_same():
 
 
 def test_manhattan_distance_to_non_vector():
-    with pytest.raises(AttributeError):
+    with pytest.raises(TypeError):
         Vector2D(0, 0).manhattan_distance_to(5)
 
 
@@ -289,6 +294,11 @@ def test_angle_to_parallel_vector():
 def test_angle_to_zero():
     with pytest.raises(ZeroDivisionError):
         Vector2D(1, 0).angle_to(Vector2D(0, 0))
+
+
+def test_angle_to_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(1, 0).angle_to(5)
 
 
 def test_angle_to_symmetric():
@@ -397,6 +407,11 @@ def test_lerp_extrapolates_beyond():
     assert Vector2D(0, 0).lerp(Vector2D(10, 10), 2) == Vector2D(20, 20)
 
 
+def test_lerp_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(0, 0).lerp(5, 0.5)
+
+
 def test_move_toward_partial_step():
     result = Vector2D(0, 0).move_toward(Vector2D(10, 0), 4)
     assert result == Vector2D(4.0, 0.0)
@@ -437,6 +452,11 @@ def test_move_toward_zero_max_distance():
     assert result == Vector2D(0, 0)
 
 
+def test_move_toward_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(0, 0).move_toward(5, 4)
+
+
 def test_project_onto():
     assert Vector2D(2, 2).project_onto(Vector2D(1, 0)) == Vector2D(2.0, 0.0)
 
@@ -454,6 +474,11 @@ def test_project_onto_parallel():
 def test_project_onto_zero():
     with pytest.raises(ZeroDivisionError):
         Vector2D(1, 1).project_onto(Vector2D(0, 0))
+
+
+def test_project_onto_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(1, 1).project_onto(5)
 
 
 def test_project_onto_returns_new_instance():
@@ -483,6 +508,11 @@ def test_reject_from_parallel():
 def test_reject_from_zero():
     with pytest.raises(ZeroDivisionError):
         Vector2D(1, 1).reject_from(Vector2D(0, 0))
+
+
+def test_reject_from_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(1, 1).reject_from(5)
 
 
 def test_project_and_reject_combine_to_self():
@@ -533,6 +563,11 @@ def test_reflect_does_not_mutate():
     assert v == Vector2D(1, -1)
 
 
+def test_reflect_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(1, -1).reflect(5)
+
+
 def test_cross_perpendicular():
     assert Vector2D(1, 0).cross(Vector2D(0, 1)) == 1
 
@@ -553,6 +588,11 @@ def test_cross_sign_indicates_direction():
     clockwise = Vector2D(0, -1)
     assert a.cross(counter_clockwise) > 0
     assert a.cross(clockwise) < 0
+
+
+def test_cross_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(1, 0).cross(5)
 
 
 def test_clamp_magnitude_scales_down():
@@ -589,6 +629,11 @@ def test_clamp_returns_new_instance():
     v = Vector2D(15, -5)
     result = v.clamp(Vector2D(0, 0), Vector2D(10, 10))
     assert result is not v
+
+
+def test_clamp_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(1, 1).clamp(5, Vector2D(10, 10))
 
 
 def test_abs():
@@ -646,6 +691,11 @@ def test_is_approx_equal_true():
 
 def test_is_approx_equal_false():
     assert not Vector2D(1, 1).is_approx_equal(Vector2D(1.1, 1))
+
+
+def test_is_approx_equal_non_vector():
+    with pytest.raises(TypeError):
+        Vector2D(1, 1).is_approx_equal(5)
 
 
 def test_to_tuple():

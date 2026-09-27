@@ -166,6 +166,9 @@ class Vector3D:
         >>> Vector3D(1.0, 0.0, 0.0).dot(Vector3D(0.0, 1.0, 0.0))
         0.0
         """
+        if not isinstance(other, Vector3D):
+            raise TypeError(f"expected Vector3D, got {type(other).__name__}")
+        
         return self.x * other.x + self.y * other.y + self.z * other.z
 
     def magnitude(self) -> float:
@@ -229,6 +232,9 @@ class Vector3D:
         >>> Vector3D(0, 0, 0).distance_squared_to(Vector3D(2, 3, 6))
         49
         """
+        if not isinstance(other, Vector3D):
+            raise TypeError(f"expected Vector3D, got {type(other).__name__}")
+        
         return (self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2
 
     def manhattan_distance_to(self, other: Vector3D) -> float:
@@ -244,6 +250,9 @@ class Vector3D:
         >>> Vector3D(0, 0, 0).manhattan_distance_to(Vector3D(2, 3, 6))
         11
         """
+        if not isinstance(other, Vector3D):
+            raise TypeError(f"expected Vector3D, got {type(other).__name__}")
+        
         return abs(self.x - other.x) + abs(self.y - other.y) + abs(self.z - other.z)
 
     def angle_to(self, other: Vector3D) -> float:
@@ -262,6 +271,9 @@ class Vector3D:
         >>> Vector3D(1, 0, 0).angle_to(Vector3D(0, 1, 0))
         1.5707963267948966
         """
+        if not isinstance(other, Vector3D):
+            raise TypeError(f"expected Vector3D, got {type(other).__name__}")
+        
         cos_theta = self.dot(other) / (self.magnitude() * other.magnitude())
         cos_theta = max(-1, min(1, cos_theta))
 

@@ -166,6 +166,9 @@ class Vector2D:
         >>> Vector2D(1.0, 0.0).dot(Vector2D(0.0, 1.0))
         0.0
         """
+        if not isinstance(other, Vector2D):
+            raise TypeError(f"expected Vector2D, got {type(other).__name__}")
+        
         return self.x * other.x + self.y * other.y
 
     def magnitude(self) -> float:
@@ -228,6 +231,9 @@ class Vector2D:
         >>> Vector2D(0, 0).distance_squared_to(Vector2D(3, 4))
         25
         """
+        if not isinstance(other, Vector2D):
+            raise TypeError(f"expected Vector2D, got {type(other).__name__}")
+        
         return (self.x - other.x) ** 2 + (self.y - other.y) ** 2
 
     def manhattan_distance_to(self, other: Vector2D) -> float:
@@ -243,6 +249,9 @@ class Vector2D:
         >>> Vector2D(0, 0).manhattan_distance_to(Vector2D(3, 4))
         7
         """
+        if not isinstance(other, Vector2D):
+            raise TypeError(f"expected Vector2D, got {type(other).__name__}")
+        
         return abs(self.x - other.x) + abs(self.y - other.y)
 
     def angle(self) -> float:
@@ -273,6 +282,9 @@ class Vector2D:
         >>> Vector2D(1, 0).angle_to(Vector2D(0, 1))
         1.5707963267948966
         """
+        if not isinstance(other, Vector2D):
+            raise TypeError(f"expected Vector2D, got {type(other).__name__}")
+        
         cos_theta = self.dot(other) / (self.magnitude() * other.magnitude())
         cos_theta = max(-1, min(1, cos_theta))
 
@@ -378,6 +390,9 @@ class Vector2D:
         >>> Vector2D(0, 0).lerp(Vector2D(10, 10), 0.5)
         Vector2D(5.0, 5.0)
         """
+        if not isinstance(other, Vector2D):
+            raise TypeError(f"expected Vector2D, got {type(other).__name__}")
+        
         return Vector2D(lerp(self.x, other.x, t), lerp(self.y, other.y, t))
 
     def move_toward(self, target: Vector2D, max_distance: float) -> Vector2D:
@@ -472,6 +487,9 @@ class Vector2D:
         >>> Vector2D(1, 0).cross(Vector2D(0, 1))
         1
         """
+        if not isinstance(other, Vector2D):
+            raise TypeError(f"expected Vector2D, got {type(other).__name__}")
+
         return self.x * other.y - self.y * other.x
     
     def abs(self) -> Vector2D:
@@ -574,6 +592,9 @@ class Vector2D:
         >>> Vector2D(15, -5).clamp(Vector2D(0, 0), Vector2D(10, 10))
         Vector2D(10, 0)
         """
+        if not isinstance(minimum, Vector2D) or not isinstance(maximum, Vector2D):
+            raise TypeError("expected Vector2D for minimum and maximum")
+        
         return Vector2D(
             clamp(self.x, minimum.x, maximum.x),
             clamp(self.y, minimum.y, maximum.y),
@@ -623,6 +644,9 @@ class Vector2D:
         >>> Vector2D(0.1 + 0.2, 1).is_approx_equal(Vector2D(0.3, 1))
         True
         """
+        if not isinstance(other, Vector2D):
+            raise TypeError(f"expected Vector2D, got {type(other).__name__}")
+        
         return approx_equal(self.x, other.x, epsilon) and approx_equal(self.y, other.y, epsilon)
 
     def to_tuple(self) -> tuple[float, float]:
