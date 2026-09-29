@@ -319,3 +319,48 @@ def test_direction_to():
 def test_direction_to_zero_distance():
     with pytest.raises(ZeroDivisionError):
         Vector3D(0, 0, 0).direction_to(Vector3D(0, 0, 0))
+
+
+def test_zero():
+    assert Vector3D.zero() == Vector3D(0, 0, 0)
+
+
+def test_one():
+    assert Vector3D.one() == Vector3D(1, 1, 1)
+
+
+def test_forward_and_backward_are_opposite():
+    assert Vector3D.forward() == -Vector3D.backward()
+
+
+def test_up_and_down_are_opposite():
+    assert Vector3D.up() == -Vector3D.down()
+
+
+def test_left_and_right_are_opposite():
+    assert Vector3D.left() == -Vector3D.right()
+
+
+def test_axes_match_left_handed_convention():
+    right = Vector3D.right()
+    up = Vector3D.up()
+    forward = Vector3D.forward()
+
+    cross = Vector3D(
+        right.y * up.z - right.z * up.y,
+        right.z * up.x - right.x * up.z,
+        right.x * up.y - right.y * up.x,
+    )
+
+    assert cross == forward
+
+
+def test_constructors_return_new_instances():
+    assert Vector3D.zero() is not Vector3D.zero()
+    assert Vector3D.one() is not Vector3D.one()
+    assert Vector3D.forward() is not Vector3D.forward()
+    assert Vector3D.backward() is not Vector3D.backward()
+    assert Vector3D.up() is not Vector3D.up()
+    assert Vector3D.down() is not Vector3D.down()
+    assert Vector3D.left() is not Vector3D.left()
+    assert Vector3D.right() is not Vector3D.right()
