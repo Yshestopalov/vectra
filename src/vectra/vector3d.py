@@ -14,6 +14,7 @@ class Vector3D:
     A 3D vector involving arithmetic (e.g. addition, subtraction) and geometric operations (e.g. distance, dot product).
 
     Vector3D is mutable, when you need to make a copy use .copy() to safely create a duplicate.
+    Vector3D uses a left-handed coordinate system.
 
     Attributes:
         x (float): Vector's horizontal component.
@@ -296,3 +297,107 @@ class Vector3D:
         Vector3D(0.0, 0.0, 1.0)
         """
         return (other - self).normalize()
+
+    @classmethod
+    def one(cls) -> Vector3D:
+        """
+        Construct the one vector.
+
+        Returns:
+            A new vector at (1, 1, 1).
+
+        >>> Vector3D.one()
+        Vector3D(1, 1, 1)
+        """
+        return cls(1, 1, 1)
+
+    @classmethod
+    def zero(cls) -> Vector3D:
+        """
+        Construct the zero vector.
+
+        Returns:
+            A new vector at (0, 0, 0).
+
+        >>> Vector3D.zero()
+        Vector3D(0, 0, 0)
+        """
+        return cls(0, 0, 0)
+
+    @classmethod
+    def forward(cls) -> Vector3D:
+        """
+        Construct the forward vector.
+
+        Returns:
+            A new vector at (0, 0, 1).
+
+        >>> Vector3D.forward()
+        Vector3D(0, 0, 1)
+        """
+        return cls(0, 0, 1)
+
+    @classmethod
+    def backward(cls) -> Vector3D:
+        """
+        Construct the backward vector.
+
+        Returns:
+            A new vector at (0, 0, -1).
+
+        >>> Vector3D.backward()
+        Vector3D(0, 0, -1)
+        """
+        return cls(0, 0, -1)
+
+    @classmethod
+    def up(cls) -> Vector3D:
+        """
+        Construct the up vector.
+
+        Returns:
+            A new vector at (0, 1, 0).
+
+        >>> Vector3D.up()
+        Vector3D(0, 1, 0)
+        """
+        return cls(0, 1, 0)
+
+    @classmethod
+    def down(cls) -> Vector3D:
+        """
+        Construct the down vector.
+
+        Returns:
+            A new vector at (0, -1, 0).
+
+        >>> Vector3D.down()
+        Vector3D(0, -1, 0)
+        """
+        return cls(0, -1, 0)
+
+    @classmethod
+    def right(cls) -> Vector3D:
+        """
+        Construct the right vector.
+
+        Returns:
+            A new vector at (1, 0, 0).
+
+        >>> Vector3D.right()
+        Vector3D(1, 0, 0)
+        """
+        return cls(1, 0, 0)
+
+    @classmethod
+    def left(cls) -> Vector3D:
+        """
+        Construct the left vector.
+
+        Returns:
+            A new vector at (-1, 0, 0).
+
+        >>> Vector3D.left()
+        Vector3D(-1, 0, 0)
+        """
+        return cls(-1, 0, 0)    
