@@ -164,6 +164,9 @@ class Vector3D:
         Returns:
             The scalar dot product.
 
+        Raises:
+            TypeError: If other is not a Vector3D.
+
         >>> Vector3D(1.0, 0.0, 0.0).dot(Vector3D(0.0, 1.0, 0.0))
         0.0
         """
@@ -230,6 +233,9 @@ class Vector3D:
         Returns:
             The squared distance between this vector and other.
 
+        Raises:
+            TypeError: If other is not a Vector3D.
+
         >>> Vector3D(0, 0, 0).distance_squared_to(Vector3D(2, 3, 6))
         49
         """
@@ -247,6 +253,9 @@ class Vector3D:
 
         Returns:
             The Manhattan distance between this vector and other.
+
+        Raises:
+            TypeError: If other is not a Vector3D.
 
         >>> Vector3D(0, 0, 0).manhattan_distance_to(Vector3D(2, 3, 6))
         11
@@ -267,6 +276,7 @@ class Vector3D:
             The angle in radians, in [0, pi].
 
         Raises:
+            TypeError: If other is not a Vector3D.
             ZeroDivisionError: If either vector has a magnitude of 0.
 
         >>> Vector3D(1, 0, 0).angle_to(Vector3D(0, 1, 0))
@@ -297,6 +307,87 @@ class Vector3D:
         Vector3D(0.0, 0.0, 1.0)
         """
         return (other - self).normalize()
+
+    def cross(self, other: Vector3D) -> Vector3D:
+        """
+        Calculate the cross product with another vector.
+
+        Args:
+            other: The vector to cross with.
+
+        Returns:
+            A new vector, perpendicular to self and other.
+
+        Raises:
+            TypeError: If other is nota Vector3D.
+
+        >>> Vector3D(1, 0, 0).cross(Vector3D(0, 1, 0))
+        Vector3D(0, 0, 1)
+        """
+        if not isinstance(other, Vector3D):
+            raise TypeError(f"expected Vector3D, got {type(other).__name__}")
+
+        return Vector3D(
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x,
+        )
+
+    def project_onto(self, other: Vector3D) -> Vector3D:
+        """
+        Calculate the projection of this vector onto another.    
+
+        Args:
+            other: The vector to project onto.
+
+        Returns:
+            A new vector, the projection of self onto another.
+
+        Raises:
+            TypeError: If other is not a Vector3D.
+            ZeroDivisionError: If other has a magnitude of 0.
+
+        >>> Vector3D(2, 2, 2).project_onto(Vector3D(1, 0, 0))
+        Vector3D(2.0, 0.0, 0.0)
+        """
+        return other * (self.dot(other) / other.dot(other))
+
+    def reject_from(self, other: Vector3D) -> Vector3D:
+        """
+        Calculate the rejection of this vector from another.   
+
+        Args:
+            other: The vector to reject from.
+
+        Returns:
+            A new vector, the rejection of self from other.
+
+        Raises:
+            TypeError: If other is not a Vector3D.
+            ZeroDivisionError: If other has a magnitude of 0.
+
+        >>> Vector3D(2, 2, 2).reject_from(Vector3D(1, 0, 0))
+        Vector3D(0.0, 2.0, 2.0)
+        """
+        return self - self.project_onto(other)
+    
+    def reflect(self, normal: Vector3D) -> Vector3D:
+        """
+        Calculate this vector reflected off a surface. 
+
+        Args:
+            normal: The unit normal of the surface to reflect off, must be normalized.
+
+        Returns:
+            A new vector, reflected accross normal.
+
+        Raises:
+            TypeError: If normal is not a Vector3D.
+
+        >>> Vector3D(1, -1, 0).reflect(Vector3D(0, 1, 0))
+        Vector3D(1, 1, 0)
+        """
+        return self - normal * (2 * self.dot(normal))
 
     @classmethod
     def one(cls) -> Vector3D:

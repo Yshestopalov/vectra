@@ -316,6 +316,155 @@ def test_direction_to():
     assert Vector3D(0, 0, 0).direction_to(Vector3D(0, 0, 5)) == Vector3D(0.0, 0.0, 1.0)
 
 
+def test_cross_perpendicular():
+    assert Vector3D(1, 0, 0).cross(Vector3D(0, 1, 0)) == Vector3D(0, 0, 1)
+
+
+def test_cross_parallel():
+    assert Vector3D(2, 0, 0).cross(Vector3D(5, 0, 0)) == Vector3D(0, 0, 0)
+
+
+def test_cross_general():
+    assert Vector3D(1, 2, 3).cross(Vector3D(4, 5, 6)) == Vector3D(-3, 6, -3)
+
+
+def test_cross_anti_commutative():
+    a = Vector3D(1, 2, 3)
+    b = Vector3D(4, 5, 6)
+    assert a.cross(b) == -b.cross(a)
+
+
+def test_cross_perpendicular_to_both_inputs():
+    a = Vector3D(1, 2, 3)
+    b = Vector3D(4, 5, 6)
+    result = a.cross(b)
+    assert a.dot(result) == 0
+    assert b.dot(result) == 0
+
+
+def test_cross_axis_order():
+    assert Vector3D.right().cross(Vector3D.up()) == Vector3D.forward()
+
+
+def test_cross_returns_new_instance():
+    a = Vector3D(1, 0, 0)
+    b = Vector3D(0, 1, 0)
+    result = a.cross(b)
+    assert result is not a
+    assert result is not b
+
+
+def test_cross_non_vector():
+    with pytest.raises(TypeError):
+        Vector3D(1, 0, 0).cross(5)
+
+
+def test_project_onto():
+    assert Vector3D(2, 2, 2).project_onto(Vector3D(1, 0, 0)) == Vector3D(2.0, 0.0, 0.0)
+
+
+def test_project_onto_perpendicular():
+    result = Vector3D(0, 5, 0).project_onto(Vector3D(1, 0, 0))
+    assert result == Vector3D(0.0, 0.0, 0.0)
+
+
+def test_project_onto_parallel():
+    result = Vector3D(3, 0, 0).project_onto(Vector3D(1, 0, 0))
+    assert result == Vector3D(3.0, 0.0, 0.0)
+
+
+def test_project_onto_zero():
+    with pytest.raises(ZeroDivisionError):
+        Vector3D(1, 1, 1).project_onto(Vector3D(0, 0, 0))
+
+
+def test_project_onto_non_vector():
+    with pytest.raises(TypeError):
+        Vector3D(1, 1, 1).project_onto(5)
+
+
+def test_project_onto_returns_new_instance():
+    a = Vector3D(2, 2, 2)
+    result = a.project_onto(Vector3D(1, 0, 0))
+    assert result is not a
+
+
+def test_project_onto_does_not_mutate():
+    a = Vector3D(2, 2, 2)
+    other = Vector3D(1, 0, 0)
+    a.project_onto(other)
+    assert a == Vector3D(2, 2, 2)
+    assert other == Vector3D(1, 0, 0)
+
+
+def test_reject_from():
+    assert Vector3D(2, 2, 2).reject_from(Vector3D(1, 0, 0)) == Vector3D(0.0, 2.0, 2.0)
+
+
+def test_reject_from_parallel():
+    result = Vector3D(3, 0, 0).reject_from(Vector3D(1, 0, 0))
+    assert result == Vector3D(0.0, 0.0, 0.0)
+
+
+def test_reject_from_zero():
+    with pytest.raises(ZeroDivisionError):
+        Vector3D(1, 1, 1).reject_from(Vector3D(0, 0, 0))
+
+
+def test_reject_from_non_vector():
+    with pytest.raises(TypeError):
+        Vector3D(1, 1, 1).reject_from(5)
+
+
+def test_reject_from_returns_new_instance():
+    a = Vector3D(2, 2, 2)
+    result = a.reject_from(Vector3D(1, 0, 0))
+    assert result is not a
+
+
+def test_project_and_reject_combine_to_self():
+    a = Vector3D(3, 4, 5)
+    other = Vector3D(1, 0, 0)
+    assert a.project_onto(other) + a.reject_from(other) == a
+
+
+def test_reflect_off_horizontal_surface():
+    assert Vector3D(1, -1, 0).reflect(Vector3D(0, 1, 0)) == Vector3D(1, 1, 0)
+
+
+def test_reflect_straight_hit_reverses():
+    result = Vector3D(0, -5, 0).reflect(Vector3D(0, 1, 0))
+    assert result == Vector3D(0, 5, 0)
+
+
+def test_reflect_parallel_to_surface_unchanged():
+    result = Vector3D(1, 0, 0).reflect(Vector3D(0, 1, 0))
+    assert result == Vector3D(1, 0, 0)
+
+
+def test_reflect_preserves_magnitude():
+    v = Vector3D(3, -4, 0)
+    normal = Vector3D(0, 1, 0)
+    assert math.isclose(v.reflect(normal).magnitude(), v.magnitude())
+
+
+def test_reflect_returns_new_instance():
+    v = Vector3D(1, -1, 0)
+    result = v.reflect(Vector3D(0, 1, 0))
+    assert result is not v
+
+
+def test_reflect_does_not_mutate():
+    v = Vector3D(1, -1, 0)
+    v.reflect(Vector3D(0, 1, 0))
+    assert v == Vector3D(1, -1, 0)
+
+
+def test_reflect_non_vector():
+    with pytest.raises(TypeError):
+        Vector3D(1, -1, 0).reflect(5)
+
+
 def test_direction_to_zero_distance():
     with pytest.raises(ZeroDivisionError):
         Vector3D(0, 0, 0).direction_to(Vector3D(0, 0, 0))

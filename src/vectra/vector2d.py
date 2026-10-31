@@ -163,6 +163,9 @@ class Vector2D:
         Returns:
             The scalar dot product.
 
+        Raises:
+            TypeError: If other is not a Vector2D.
+
         >>> Vector2D(1.0, 0.0).dot(Vector2D(0.0, 1.0))
         0.0
         """
@@ -228,6 +231,9 @@ class Vector2D:
         Returns:
             The squared distance between this vector and other.
 
+        Raises:
+            TypeError: If other is not a Vector2D.
+
         >>> Vector2D(0, 0).distance_squared_to(Vector2D(3, 4))
         25
         """
@@ -245,6 +251,9 @@ class Vector2D:
 
         Returns:
             The Manhattan distance between this vector and other.
+
+        Raises:
+            TypeError: If other is not a Vector2D.
 
         >>> Vector2D(0, 0).manhattan_distance_to(Vector2D(3, 4))
         7
@@ -277,6 +286,7 @@ class Vector2D:
             The angle in radians, in [0, pi].
 
         Raises:
+            TypeError: If other is not a Vector2D.
             ZeroDivisionError: If either vector has a magnitude of 0.
 
         >>> Vector2D(1, 0).angle_to(Vector2D(0, 1))
@@ -387,6 +397,9 @@ class Vector2D:
         Returns:
             A new vector, interpolated between self and other.
 
+        Raises:
+            TypeError: If other is not a Vector2D.
+
         >>> Vector2D(0, 0).lerp(Vector2D(10, 10), 0.5)
         Vector2D(5.0, 5.0)
         """
@@ -483,6 +496,9 @@ class Vector2D:
 
         Returns:
             The scalar cross product.
+
+        Raises:
+            TypeError: If other is not a Vector2D.
 
         >>> Vector2D(1, 0).cross(Vector2D(0, 1))
         1
@@ -589,6 +605,9 @@ class Vector2D:
         Returns:
             A new vector, component-wise clamped.
 
+        Raises:
+            TypeError: If minimum or maximum are not Vector2D.
+
         >>> Vector2D(15, -5).clamp(Vector2D(0, 0), Vector2D(10, 10))
         Vector2D(10, 0)
         """
@@ -640,6 +659,9 @@ class Vector2D:
 
         Returns:
             True if both components are within epsilon of other's.
+
+        Raises:
+            TypeError: If other is not a Vector2D.
 
         >>> Vector2D(0.1 + 0.2, 1).is_approx_equal(Vector2D(0.3, 1))
         True
